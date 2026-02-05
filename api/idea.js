@@ -1,35 +1,25 @@
 export default async function handler(req, res) {
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You generate fun, unique, non-repeating ideas of things people can do when bored. Always give a new idea."
-          },
-          {
-            role: "user",
-            content: "Give one random fun idea."
-          }
-        ],
-        temperature: 1.2
-      })
+        model: "gpt-4.1-mini",
+        input: "Give ONE short fun idea for when someone is bored. No numbering. Just the idea."
+      }),
     });
 
     const data = await response.json();
 
-    res.status(200).json({
-      idea: data.choices[0].message.content
-    });
+    const idea = data.output[0].content[0].text;
+
+    res.status(200).json({ idea });
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "OpenAI call failed" });
+    res.status(500).json({ idea: "AI failed. Try again." });
   }
 }
