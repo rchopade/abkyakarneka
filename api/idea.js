@@ -1,4 +1,6 @@
 export default async function handler(req, res) {
+  const { history = [] } = req.body || {};
+
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -11,19 +13,19 @@ export default async function handler(req, res) {
         {
           role: "system",
           content:
-            "You generate fun short ideas when someone is bored. Respond with ONE short idea only."
+            "You generate fun short ideas when someone is bored. NEVER repeat any idea from the provided list."
         },
         {
           role: "user",
-          content: "Give me a random fun idea"
+          content: `Give one short fun idea. Avoid these ideas: ${history.join(", ")}`
         }
       ],
-      temperature: 1
+      temperature: 1.2
     }),
   });
 
   const data = await response.json();
-  const idea = data.choices?.[0]?.message?.content || "Go stretch for 2 minutes";
+  const idea = data.choices?.[0]?.message?.content || "Do 10 jumping jacks";
 
   res.status(200).json({ idea });
 }
