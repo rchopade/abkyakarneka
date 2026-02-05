@@ -16,8 +16,7 @@ export default function App() {
       } else {
         throw new Error("AI failed")
       }
-    } catch (err) {
-      // fallback idea if AI fails
+    } catch {
       const random =
         fallbackIdeas[Math.floor(Math.random() * fallbackIdeas.length)]
       setIdea(random)
@@ -34,37 +33,40 @@ export default function App() {
       background: "#ffffff",
       fontFamily: "Arial"
     }}>
-      <div style={{ textAlign: "center", width: "90%", maxWidth: "600px" }}>
+      <div style={{ textAlign: "center", width: "90%", maxWidth: "650px" }}>
         
-        <h1 style={{ fontSize: "48px", marginBottom: "40px" }}>
-          Ab Kya Karne Ka?
+        {/* Heading */}
+        <h1 style={{
+          fontSize: "52px",
+          fontWeight: "500",
+          marginBottom: "40px"
+        }}>
+          Ab kya karneka?
         </h1>
 
+        {/* Idea text */}
         <div style={{
-          padding: "25px",
-          borderRadius: "24px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          fontSize: "22px",
-          minHeight: "80px",
-          marginBottom: "30px",
-          color: "#000"
+          fontSize: "24px",
+          minHeight: "70px",
+          marginBottom: "35px",
+          color: "#222"
         }}>
-          {idea || "Click the button to get an idea ✨"}
+          {idea || "Click below to get an idea ✨"}
         </div>
 
+        {/* Button */}
         <button
           onClick={getIdea}
           style={{
-            padding: "15px 30px",
-            fontSize: "20px",
-            borderRadius: "30px",
-            border: "none",
-            background: "#4285F4",
-            color: "white",
+            padding: "14px 28px",
+            fontSize: "18px",
+            borderRadius: "24px",
+            border: "1px solid #dadce0",
+            background: "#f8f9fa",
             cursor: "pointer"
           }}
         >
-          {loading ? "Thinking..." : "Get Idea"}
+          {loading ? "Thinking..." : "Get idea"}
         </button>
 
       </div>
