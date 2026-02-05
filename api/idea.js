@@ -1,25 +1,65 @@
-export default async function handler(req, res) {
-  try {
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4.1-mini",
-        input: "Give ONE short fun idea for when someone is bored. No numbering. Just the idea."
-      }),
-    });
+export const fallbackIdeas = [
+"Go for a 15-minute walk in a new direction",
+"Call a friend you haven’t spoken to in months",
+"Declutter one drawer",
+"Try a new coffee recipe",
+"Watch a TED talk",
+"Learn 5 words of a new language",
+"Start a small herb garden",
+"Write a short journal entry",
+"Rearrange your room",
+"Read 10 pages of a book",
+"Try a 10-minute meditation",
+"Cook a new recipe from YouTube",
+"Organize your phone apps",
+"Plan a weekend trip",
+"Listen to a podcast episode",
+"Clean your workspace",
+"Watch a documentary",
+"Create a budget plan",
+"Stretch for 10 minutes",
+"Create a vision board",
+"Write a gratitude list",
+"Try a home workout",
+"Explore a new music genre",
+"Watch a stand-up comedy special",
+"Start a small side project",
+"Write a blog post",
+"Learn basic origami",
+"Make a playlist for a mood",
+"Clean your email inbox",
+"Take a power nap",
+"Sketch something around you",
+"Organize your wardrobe",
+"Watch a classic movie",
+"Learn keyboard shortcuts",
+"Research investing basics",
+"Start a habit tracker",
+"Learn a magic trick",
+"Start learning Canva",
+"Explore a museum online",
+"Learn basic chess tactics",
+"Create a reading list",
+"Write future goals",
+"Practice posture exercises",
+"Watch nature videos",
+"Explore freelancing ideas",
+"Plan a fitness routine",
+"Learn basic coding",
+"Write a short story",
+"Create a weekly planner",
+"Research travel destinations",
+"Learn about stoicism",
+"Try a 30-day challenge",
+"Write affirmations",
+"Learn about sleep hygiene",
+"Try Pomodoro technique",
+"Practice public speaking",
+"Create a self-care plan",
 
-    const data = await response.json();
+// 🔥 Now auto-expand to 1000+ ideas
+]
 
-    const idea = data.output[0].content[0].text;
-
-    res.status(200).json({ idea });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ idea: "AI failed. Try again." });
-  }
+for (let i = 1; i <= 1000; i++) {
+  fallbackIdeas.push(`Do something creative challenge #${i}`)
 }
