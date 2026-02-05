@@ -1,6 +1,12 @@
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};
+
 export default async function handler(req, res) {
   try {
-    const { history = [] } = req.body || {};
+    const history = req.body?.history || [];
 
     const openaiRes = await fetch(
       "https://api.openai.com/v1/chat/completions",
@@ -27,10 +33,11 @@ export default async function handler(req, res) {
     const data = await openaiRes.json();
 
     if (!data.choices) {
+      console.log("OpenAI error:", data);
       return res.status(500).json({ idea: "AI error. Try again." });
     }
 
-    let text = data.choices[0].message.content;
+    const text = data.choices[0].message.content;
 
     let ideas = text
       .split("\n")
@@ -45,7 +52,7 @@ export default async function handler(req, res) {
     res.status(200).json({ idea });
 
   } catch (err) {
-    console.log(err);
+    console.log("Server crash:", err);
     res.status(500).json({ idea: "Server error. Try again." });
   }
 }
