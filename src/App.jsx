@@ -1,19 +1,23 @@
 import { useState } from "react"
-import { fallbackIdeas } from "./ideas"
+import { fallbackIdeas } from "./ideas.js"
 
 export default function App() {
   const [idea, setIdea] = useState("")
   const [loading, setLoading] = useState(false)
-
-
 
   async function getIdea() {
     setLoading(true)
     try {
       const res = await fetch("/api/idea")
       const data = await res.json()
-      setIdea(data.idea)
+
+      if (data.idea) {
+        setIdea(data.idea)
+      } else {
+        throw new Error("AI failed")
+      }
     } catch (err) {
+      // fallback idea if AI fails
       const random =
         fallbackIdeas[Math.floor(Math.random() * fallbackIdeas.length)]
       setIdea(random)
