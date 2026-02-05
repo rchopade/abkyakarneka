@@ -1,126 +1,66 @@
-import { useState, useEffect } from "react";
+// src/App.jsx
+import { useState } from "react";
 
-const ideas = [
-  "Go for a 20-min walk and listen to a podcast 🎧",
-  "Call a friend you haven't spoken to in months ☎️",
-  "Declutter one drawer in your house 🧹",
-  "Watch a random TED talk 🎥",
-  "Learn 5 phrases of a new language 🌍",
-  "Cook a dish you've never tried 🍳",
-  "Write 10 things you're grateful for ✍️",
-  "Do a 7-minute workout 💪",
-  "Read 10 pages of a book 📚",
-  "Plan your dream vacation ✈️",
-  "Organize your phone photos 📱",
-  "Start brainstorming a side-hustle 💡",
-  "Try meditation for 10 minutes 🧘",
-  "Clean your workspace 🖥️",
-  "Start a journal 📓",
-  "Watch a documentary 🎬",
-  "Explore a new music genre 🎶",
-  "Take a power nap 😴",
-  "Write a future letter to yourself 💌"
-];
+export default function App() {
+  const [idea, setIdea] = useState("Click the button to get an AI idea ✨");
+  const [loading, setLoading] = useState(false);
 
-function App() {
-  const [idea, setIdea] = useState("Click the button to get an idea ✨");
-  const [usedIdeas, setUsedIdeas] = useState([]);
-  const [allowRepeats, setAllowRepeats] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("usedIdeas");
-    if (stored) setUsedIdeas(JSON.parse(stored));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("usedIdeas", JSON.stringify(usedIdeas));
-  }, [usedIdeas]);
-
-  const generateIdea = () => {
-    let availableIdeas = ideas;
-
-    if (!allowRepeats) {
-      availableIdeas = ideas.filter(i => !usedIdeas.includes(i));
+  async function generateIdea() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/idea");
+      const data = await res.json();
+      setIdea(data.idea);
+    } catch (err) {
+      setIdea("Error getting idea 😢");
     }
-
-    if (availableIdeas.length === 0) {
-      setUsedIdeas([]);
-      availableIdeas = ideas;
-    }
-
-    const random = availableIdeas[Math.floor(Math.random() * availableIdeas.length)];
-    setIdea(random);
-
-    if (!usedIdeas.includes(random)) {
-      setUsedIdeas([...usedIdeas, random]);
-    }
-  };
-
-  const resetHistory = () => {
-    setUsedIdeas([]);
-    localStorage.removeItem("usedIdeas");
-  };
+    setLoading(false);
+  }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      background: "linear-gradient(135deg, #6366f1, #ec4899)",
-      fontFamily: "Arial",
-      padding: "20px"
-    }}>
-      <div style={{
-        background: "white",
-        padding: "40px",
-        borderRadius: "20px",
-        textAlign: "center",
-        maxWidth: "500px",
-        width: "100%",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
-      }}>
-        <h1>Ab Kya Karne Ka? 🤔</h1>
-        <p>AI remembers what you already did</p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-700 p-6">
+      <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-xl w-full text-center">
+        <h1 className="text-4xl font-bold mb-6 text-gray-900">Ab Kya Karne Ka?</h1>
 
-        <div style={{
-          background: "#f3f4f6",
-          padding: "20px",
-          borderRadius: "12px",
-          margin: "20px 0",
-          minHeight: "60px"
-        }}>
-          {idea}
+        <div className="bg-gray-100 rounded-2xl p-6 mb-6 min-h-[120px] flex items-center justify-center">
+          <p className="text-2xl font-semibold text-gray-900">{loading ? "Thinking... 🤖" : idea}</p>
         </div>
 
-        <button onClick={generateIdea} style={btnStyle}>
-          Give me something to do ✨
-        </button>
-
-        <br /><br />
-
-        <button onClick={() => setAllowRepeats(!allowRepeats)} style={btnStyle}>
-          {allowRepeats ? "Repeats allowed" : "Avoid repeats (Memory ON)"}
-        </button>
-
-        <br /><br />
-
-        <button onClick={resetHistory} style={btnStyle}>
-          Reset history
+        <button
+          onClick={generateIdea}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl text-lg font-semibold shadow-lg transition"
+        >
+          Give me an AI idea ✨
         </button>
       </div>
     </div>
   );
 }
 
-const btnStyle = {
-  padding: "12px 20px",
-  borderRadius: "10px",
-  border: "none",
-  background: "#6366f1",
-  color: "white",
-  cursor: "pointer",
-  fontSize: "16px"
-};
+/*
+Create a NEW file at: /api/idea.js (at project root, not inside src)
+Paste this code there:
 
-export default App;
+export default async function handler(req, res) {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: "You generate fun short ideas when someone is bored. Respond with ONE short idea only." },
+        { role: "user", content: "Give me a random fun idea" }
+      ],
+      temperature: 1
+    }),
+  });
+
+  const data = await response.json();
+  const idea = data.choices?.[0]?.message?.content || "Go stretch for 2 minutes";
+
+  res.status(200).json({ idea });
+}
+*/
