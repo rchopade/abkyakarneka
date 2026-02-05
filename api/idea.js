@@ -1,44 +1,51 @@
 export default async function handler(req, res) {
-  const { history = [] } = req.body || {};
+  try {
+    const { history = [] } = req.body || {};
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content:
-            "Generate 10 SHORT fun ideas for when someone is bored. Return as a numbered list."
-        }
-      ],
-      temperature: 1.2
-    }),
-  });
+    const openaiRes = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content:
+                "Generate 10 short fun ideas for when someone is bored. Return as a numbered list."
+            }
+          ],
+          temperature: 1.2,
+        }),
+      }
+    );
 
-  const data = await response.json();
-  let text = data.choices?.[0]?.message?.content || "";
+    const data = await openaiRes.json();
 
-  // Convert numbered list → array
-  let ideas = text
-    .split("\n")
-    .map(line => line.replace(/^[0-9]+[.)-]?\s*/, "").trim())
-    .filter(Boolean);
+    if (!data.choices) {
+      return res.status(500).json({ idea: "AI error. Try again." });
+    }
 
-  // Remove already used ideas
-  let newIdeas = ideas.filter(i => !history.includes(i));
+    let text = data.choices[0].message.content;
 
-  // If all ideas were used, reset history automatically
-  if (newIdeas.length === 0) {
-    newIdeas = ideas;
+    let ideas = text
+      .split("\n")
+      .map((line) => line.replace(/^[0-9]+[.)-]?\s*/, "").trim())
+      .filter(Boolean);
+
+    let newIdeas = ideas.filter((i) => !history.includes(i));
+    if (newIdeas.length === 0) newIdeas = ideas;
+
+    const idea = newIdeas[Math.floor(Math.random() * newIdeas.length)];
+
+    res.status(200).json({ idea });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ idea: "Server error. Try again." });
   }
-
-  // Pick random unused idea
-  const idea = newIdeas[Math.floor(Math.random() * newIdeas.length)];
-
-  res.status(200).json({ idea });
 }
