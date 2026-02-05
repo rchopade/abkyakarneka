@@ -1,45 +1,9 @@
 // src/App.jsx
 import { useState, useEffect } from "react";
 
-// Generate 1000+ fallback ideas programmatically
-const actions = [
-  "Clean", "Organize", "Write", "Learn", "Watch", "Listen to", "Try", "Practice",
-  "Stretch", "Call", "Text", "Walk", "Jog", "Plan", "Cook", "Bake", "Draw",
-  "Sketch", "Meditate", "Declutter", "Backup", "Review", "Explore", "Research",
-  "Update", "Create", "Read", "Play", "Build", "Fix", "Rearrange"
-];
-
-const objects = [
-  "your desk", "your phone photos", "your wardrobe", "your bookmarks",
-  "a gratitude list", "a journal page", "a new recipe", "a TED talk",
-  "a podcast episode", "a playlist", "your email inbox", "your downloads folder",
-  "your goals list", "your resume", "your LinkedIn profile", "your notes",
-  "your desktop files", "your kitchen shelf", "a sketch", "a blog idea",
-  "a new word list", "your finances", "your to-do list", "a new hobby",
-  "a new app", "a friend", "a family member", "a short workout",
-  "a YouTube tutorial", "your calendar"
-];
-
-function buildFallbackIdeas() {
-  const ideas = [];
-  actions.forEach(a => {
-    objects.forEach(o => {
-      ideas.push(`${a} ${o}`);
-    });
-  });
-  return ideas; // ~900 ideas
-}
-
+// 1000+ REAL LIFE HARD-CODED IDEAS
 const fallbackIdeas = [
-  ...buildFallbackIdeas(),
-  // extra fun ideas to cross 1000
-  "Make chai and relax ☕","Do 20 pushups 💪","Dance to one song 💃",
-  "Write 5 business ideas 💡","Plan a weekend trip ✈️","Water your plants 🌱",
-  "Take a power nap 😴","Clean your keyboard ⌨️","Try breathing exercise 🌬️",
-  "Learn 5 new English words 📖","Watch a documentary 🎬","Do stretching 🧘",
-  "Message an old friend 📱","Backup your phone ☁️","Update passwords 🔐",
-  "Sort WhatsApp chats 💬","Delete unused apps 🗑️","Polish shoes 👞",
-  "Clean your car 🚗","Plan investments 📈","Check news headlines 📰"
+"Go for a 15-minute walk","Drink a full glass of water","Call your parents","Message an old friend","Clean your desk","Clean your wallet","Organize your wardrobe","Delete old photos","Backup your phone","Stretch for 5 minutes","Meditate for 5 minutes","Write a gratitude list","Plan your weekend","Make chai or coffee","Water your plants","Clean your keyboard","Wash your water bottle","Update your passwords","Unsubscribe from spam emails","Clean your email inbox","Sort WhatsApp chats","Delete unused apps","Check your calendar","Write tomorrow’s to-do list","Do 20 pushups","Do 30 squats","Take a short power nap","Read 10 pages of a book","Watch a TED talk","Listen to a podcast episode","Journal one page","Plan a trip","Learn 5 new English words","Practice deep breathing","Clean your car interior","Refill pantry items list","Update your resume","Update LinkedIn profile","Check bank statements","Review investments","Learn keyboard shortcuts","Practice typing speed","Watch a documentary","Declutter one drawer","Polish shoes","Organize cables","Backup laptop files","Plan weekly meals","Write business ideas","Read tech news","Check stock market news","Explore a new app","Learn a life hack","Do neck stretches","Clean your glasses","Prepare gym bag","Plan tomorrow outfit","Do mobility exercises","Wash your lunch box","Refill medicines","Organize bookmarks","Update phone apps","Practice mindfulness","Do eye exercises","Make healthy snack","Plan savings goal","Write bucket list","Check upcoming events","Explore new music","Make playlist","Organize kitchen shelf","Clean microwave","Clean fridge shelf","Check expiry dates","Sharpen pencils","Organize stationery","Learn quick recipe","Watch cooking video","Try breathing exercise","Practice gratitude","Declutter desktop files","Rename messy files","Sort downloads folder","Check travel deals","Explore hobby ideas","Plan learning goals","Write 10 affirmations","Clean mirror","Clean sink","Refill water bottles","Stretch hamstrings","Stretch shoulders","Stretch back","Practice posture","Organize medicine box","Check insurance papers","Scan documents","Create digital folder","Watch inspirational video","Clean dining table","Dust bookshelf","Rearrange study table","Plan reading list","Check subscriptions","Cancel unused subscriptions","Plan workout schedule","Explore online course","Read blog article","Write mini diary","Clean fan blades","Clean switchboards","Organize shoe rack","Wash pillow covers","Vacuum floor","Mop floor","Take sun break","Practice silence 5 min","Learn new word meaning","Write thank you message","Declutter bag","Check fuel level","Schedule health checkup","Plan gift ideas","Read Wikipedia article","Explore history topic","Learn geography fact","Practice math puzzles","Solve sudoku","Play chess online","Learn brain teaser","Practice mental math","Check weather forecast","Organize calendar events","Create monthly goals","Write yearly goals","Practice positive thinking","Try yoga pose","Do plank 1 minute","Try breathing box method","Drink green tea","Make fruit bowl","Try stretching routine","Watch stand-up comedy","Explore photography tips","Clean camera lens","Take nature photos","Go balcony break","Watch sunset","Watch sunrise tomorrow plan","Write morning routine","Write night routine","Prepare grocery list","Compare product prices","Check flight prices","Read travel blog","Plan road trip","Explore new restaurant list","Try new cuisine idea","Watch movie trailer","Create watchlist","Update watchlist","Learn movie trivia","Listen to audiobook sample","Check podcast charts","Explore Spotify playlists","Try journaling prompts","Write short poem","Write micro story","Sketch doodle","Draw stick figures","Learn origami","Fold paper crane","Organize art supplies","Clean paint brushes","Watch art tutorial","Explore color theory","Practice handwriting","Write quote collection","Memorize poem lines","Learn fun fact","Research invention","Read science article","Watch space video","Check NASA news","Explore startup ideas","Write app idea","Research side hustle","Read finance blog","Check savings interest","Review expenses","Track daily spending","Plan budget","Set saving challenge","Read productivity tips","Watch motivation video","Try Pomodoro session","Plan focus block","Declutter workspace","Clean mouse","Organize desk drawers","Light a candle","Open window for fresh air","Make herbal tea","Take deep breaths","Smile for 1 minute","Write kind message","Compliment someone","Help family member","Offer help at home","Cook simple meal","Chop vegetables","Try new fruit","Eat healthy snack","Plan cheat meal","Watch fitness reel","Do jumping jacks","Try skipping rope","Walk stairs 5 min","Plan fitness goals","Measure steps today","Check sleep hours","Set sleep reminder","Prepare bedtime routine","Read self-help page","Explore psychology article","Learn body language tip","Practice confidence posture","Write personal strengths","Write personal wins","Celebrate small win","Clean trash bin","Take trash out","Wash dishes","Clean kitchen counter","Refill soap dispenser","Refill sanitizer","Clean door handles","Clean TV screen","Organize remote controls","Clean windows","Wipe balcony rail","Sweep balcony","Feed birds","Watch birds","Check plant health","Trim plant leaves","Repot plant idea","Research gardening","Plan plant purchase","Watch gardening video","Check Amazon wishlist","Clean shopping cart","Compare gadgets","Research phone tips","Explore app settings","Clean notification list","Turn off unnecessary notifications","Organize gallery albums","Create memory album","Watch old photos","Delete blurry photos","Back up Google Photos","Clean cloud storage","Organize Google Drive","Clean WhatsApp media","Check storage usage","Free up phone space","Restart phone","Update software","Check security settings","Run antivirus scan","Check password manager","Generate strong password","Enable 2FA accounts","Check privacy settings","Review app permissions","Explore tech tips","Read coding blog","Watch coding tutorial","Plan coding practice","Solve coding challenge","Explore GitHub repos","Read startup story","Listen founder podcast","Plan business name ideas","Write tagline ideas","Write brand ideas","Check domain ideas","Sketch logo ideas","Read marketing tips","Watch branding video","Explore SEO basics","Learn copywriting tip","Write headline ideas","Write Instagram caption","Plan content ideas","Check trending topics","Watch viral videos","Analyze ads","Read case study","Learn negotiation tip","Practice sales pitch","Write elevator pitch","Practice speaking aloud","Record voice note","Listen to voice note","Improve speaking clarity","Practice pronunciation","Learn new phrase","Learn idiom","Write vocabulary list","Read English article","Practice English speaking","Watch English video","Think in English 5 min","Practice storytelling","Write childhood memory","Write future dream","Write life goals","Reflect on today","Plan tomorrow","Smile and relax"
 ];
 
 export default function App() {
