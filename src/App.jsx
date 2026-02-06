@@ -89,12 +89,14 @@ export default function App() {
           <button
             onClick={resetIdeas}
             style={{
-              padding: "16px 24px",
-              fontSize: "18px",
+              padding: "16px 34px",
+              fontSize: "20px",
               borderRadius: "30px",
-              border: "1px solid #ccc",
-              background: "#f5f5f5",
-              cursor: "pointer"
+              border: "none",
+              background: "#1a73e8", // darker blue for distinction
+              color: "white",
+              cursor: "pointer",
+              boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
             }}
           >
             Reset Memory
