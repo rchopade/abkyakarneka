@@ -1,27 +1,36 @@
-import { useState } from "react"
-import { fallbackIdeas } from "./ideas.js"
+import { useState, useEffect } from "react"
+import { ideas } from "./ideas.js"
 
 export default function App() {
   const [idea, setIdea] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [usedIdeas, setUsedIdeas] = useState([])
 
-  async function getIdea() {
-    setLoading(true)
-    try {
-      const res = await fetch("/api/idea")
-      const data = await res.json()
+  // Load used ideas from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("usedIdeas")
+    if (saved) setUsedIdeas(JSON.parse(saved))
+  }, [])
 
-      if (data.idea) {
-        setIdea(data.idea)
-      } else {
-        throw new Error("AI failed")
-      }
-    } catch {
-      const random =
-        fallbackIdeas[Math.floor(Math.random() * fallbackIdeas.length)]
-      setIdea(random)
+  function getIdea() {
+    const remaining = ideas.filter(i => !usedIdeas.includes(i))
+
+    if (remaining.length === 0) {
+      setIdea("🎉 You finished all ideas! Click Reset to start again.")
+      return
     }
-    setLoading(false)
+
+    const random = remaining[Math.floor(Math.random() * remaining.length)]
+    const updatedUsed = [...usedIdeas, random]
+
+    setIdea(random)
+    setUsedIdeas(updatedUsed)
+    localStorage.setItem("usedIdeas", JSON.stringify(updatedUsed))
+  }
+
+  function resetIdeas() {
+    localStorage.removeItem("usedIdeas")
+    setUsedIdeas([])
+    setIdea("Memory cleared! Click Get Idea 🎉")
   }
 
   return (
@@ -47,7 +56,7 @@ export default function App() {
 
         {/* Idea Card */}
         <div style={{
-          padding: "28px",
+          padding: "30px",
           borderRadius: "28px",
           boxShadow: "0 6px 25px rgba(0,0,0,0.12)",
           fontSize: "24px",
@@ -56,25 +65,41 @@ export default function App() {
           color: "#000",
           background: "#fff"
         }}>
-          {idea || "Click the button to get an idea ✨"}
+          {idea || "Click Get Idea to begin ✨"}
         </div>
 
-        {/* Button */}
-        <button
-          onClick={getIdea}
-          style={{
-            padding: "16px 34px",
-            fontSize: "20px",
-            borderRadius: "30px",
-            border: "none",
-            background: "#4285F4",
-            color: "white",
-            cursor: "pointer",
-            boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
-          }}
-        >
-          {loading ? "Thinking..." : "Get Idea"}
-        </button>
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: "15px", justifyContent: "center" }}>
+          <button
+            onClick={getIdea}
+            style={{
+              padding: "16px 34px",
+              fontSize: "20px",
+              borderRadius: "30px",
+              border: "none",
+              background: "#4285F4",
+              color: "white",
+              cursor: "pointer",
+              boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
+            }}
+          >
+            Get Idea
+          </button>
+
+          <button
+            onClick={resetIdeas}
+            style={{
+              padding: "16px 24px",
+              fontSize: "18px",
+              borderRadius: "30px",
+              border: "1px solid #ccc",
+              background: "#f5f5f5",
+              cursor: "pointer"
+            }}
+          >
+            Reset Memory
+          </button>
+        </div>
 
       </div>
     </div>
